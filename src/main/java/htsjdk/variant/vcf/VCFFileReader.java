@@ -2,10 +2,7 @@ package htsjdk.variant.vcf;
 
 import htsjdk.samtools.SAMFileHeader;
 import htsjdk.samtools.SAMSequenceDictionary;
-import htsjdk.samtools.util.CloseableIterator;
-import htsjdk.samtools.util.CloserUtil;
-import htsjdk.samtools.util.Interval;
-import htsjdk.samtools.util.IntervalList;
+import htsjdk.samtools.util.*;
 import htsjdk.tribble.AbstractFeatureReader;
 import htsjdk.tribble.FeatureCodec;
 import htsjdk.tribble.FeatureReader;
@@ -28,7 +25,7 @@ public class VCFFileReader implements Closeable, Iterable<VariantContext> {
 	 * Returns true if the given file appears to be a BCF file.
 	 */
 	public static boolean isBCF(final File file) {
-		return file.getAbsolutePath().endsWith(".bcf");
+		return file.getAbsolutePath().endsWith(IOUtil.BCF_FILE_EXTENSION);
 	}
 
 	/**
@@ -159,4 +156,8 @@ public class VCFFileReader implements Closeable, Iterable<VariantContext> {
 			throw new TribbleException("Could not close a variant context feature reader.", ioe);
 		}
 	}
+
+    public boolean isQueriable() {
+        return reader.hasIndex();
+    }
 }
